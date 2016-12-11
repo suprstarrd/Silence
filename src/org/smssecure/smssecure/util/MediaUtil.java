@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import ws.com.google.android.mms.ContentType;
 
 public class MediaUtil {
+
   private static final String TAG = MediaUtil.class.getSimpleName();
 
   public static @Nullable ThumbnailData generateThumbnail(Context context, MasterSecret masterSecret, String contentType, Uri uri)
