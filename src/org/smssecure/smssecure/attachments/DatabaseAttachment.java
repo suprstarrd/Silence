@@ -15,9 +15,9 @@ public class DatabaseAttachment extends Attachment {
   public DatabaseAttachment(AttachmentId attachmentId, long mmsId,
                             boolean hasData, boolean hasThumbnail,
                             String contentType, int transferProgress, long size,
-                            String location, String key, String relay)
+                            String fileName, String location, String key, String relay)
   {
-    super(contentType, transferProgress, size, location, key, relay);
+    super(contentType, transferProgress, size, fileName, location, key, relay);
     this.attachmentId = attachmentId;
     this.hasData      = hasData;
     this.hasThumbnail = hasThumbnail;

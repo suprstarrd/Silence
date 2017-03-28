@@ -35,6 +35,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.widget.EditText;
 
 import org.smssecure.smssecure.BuildConfig;
@@ -49,6 +50,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -63,6 +65,8 @@ import ws.com.google.android.mms.pdu.CharacterSets;
 import ws.com.google.android.mms.pdu.EncodedStringValue;
 
 public class Util {
+  private static final String TAG = Util.class.getSimpleName();
+
   public static Handler handler = new Handler(Looper.getMainLooper());
 
   public static String join(String[] list, String delimiter) {
@@ -155,6 +159,35 @@ public class Util {
     } catch (InterruptedException ie) {
       throw new AssertionError(ie);
     }
+  }
+
+  public static void close(InputStream in) {
+    try {
+      in.close();
+    } catch (IOException e) {
+      Log.w(TAG, e);
+    }
+  }
+
+  public static void close(OutputStream out) {
+     try {
+       out.close();
+     } catch (IOException e) {
+       Log.w(TAG, e);
+     }
+   }
+
+  public static long getStreamLength(InputStream in) throws IOException {
+    byte[] buffer    = new byte[4096];
+    int    totalSize = 0;
+
+    int read;
+
+    while ((read = in.read(buffer)) != -1) {
+      totalSize += read;
+    }
+
+    return totalSize;
   }
 
   public static String canonicalizeNumber(Context context, String number)
@@ -364,5 +397,14 @@ public class Util {
 
   public static float clamp(float value, float min, float max) {
     return Math.min(Math.max(value, min), max);
+  }
+
+  public static String getPrettyFileSize(long sizeBytes) {
+    if (sizeBytes <= 0) return "0";
+
+    String[] units       = new String[]{"B", "kB", "MB", "GB", "TB"};
+    int      digitGroups = (int) (Math.log10(sizeBytes) / Math.log10(1024));
+
+    return new DecimalFormat("#,##0.#").format(sizeBytes/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
   }
 }

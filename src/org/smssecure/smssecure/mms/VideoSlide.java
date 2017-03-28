@@ -33,7 +33,7 @@ import ws.com.google.android.mms.ContentType;
 public class VideoSlide extends Slide {
 
   public VideoSlide(Context context, Uri uri, long dataSize) throws IOException {
-    super(context, constructAttachmentFromUri(context, uri, ContentType.VIDEO_UNSPECIFIED, dataSize, false));
+    super(context, constructAttachmentFromUri(context, uri, ContentType.VIDEO_UNSPECIFIED, dataSize, false, null));
   }
 
   public VideoSlide(Context context, Attachment attachment) {

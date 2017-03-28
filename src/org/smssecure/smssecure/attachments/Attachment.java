@@ -14,6 +14,9 @@ public abstract class Attachment {
   private final long    size;
 
   @Nullable
+  private final String fileName;
+
+  @Nullable
   private final String  location;
 
   @Nullable
@@ -22,12 +25,13 @@ public abstract class Attachment {
   @Nullable
   private final String relay;
 
-  public Attachment(@NonNull String contentType, int transferState, long size,
+  public Attachment(@NonNull String contentType, int transferState, long size, @Nullable String fileName,
                     @Nullable String location, @Nullable String key, @Nullable String relay)
   {
     this.contentType   = contentType;
     this.transferState = transferState;
     this.size          = size;
+    this.fileName      = fileName;
     this.location      = location;
     this.key           = key;
     this.relay         = relay;
@@ -50,6 +54,11 @@ public abstract class Attachment {
 
   public long getSize() {
     return size;
+  }
+
+  @Nullable
+  public String getFileName() {
+    return fileName;
   }
 
   @NonNull
