@@ -82,6 +82,7 @@ public class SilencePreferences {
   private static final String FALLBACK_MMS_ENABLED_PREF        = "pref_mms_fallback_enabled";
   private static final String SIGNED_PREKEY_REGISTERED_PREF    = "pref_signed_prekey_registered";
   private static final String WIFI_SMS_PREF                    = "pref_wifi_sms";
+  private static final String SENDING_DELAY                    = "pref_sending_delay";
 
   private static final String GCM_REGISTRATION_ID_PREF         = "pref_gcm_registration_id";
   private static final String GCM_REGISTRATION_ID_VERSION_PREF = "pref_gcm_registration_id_version";
@@ -125,6 +126,10 @@ public class SilencePreferences {
 
   public static boolean isWifiSmsEnabled(Context context) {
     return getBooleanPreference(context, WIFI_SMS_PREF, false);
+  }
+
+  public static int getSendingDelay(Context context) {
+    return Integer.parseInt(getStringPreference(context, SENDING_DELAY, "0"));
   }
 
   public static int getRepeatAlertsCount(Context context) {

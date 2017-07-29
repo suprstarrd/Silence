@@ -32,72 +32,98 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <LinearLayout android:id="@+id/bottom_panel"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:gravity="center_vertical"
-                      android:orientation="horizontal"
-                      android:clickable="true"
-                      android:background="?android:windowBackground"
-                      android:padding="5dp">
-
-            <LinearLayout android:id="@+id/compose_bubble"
-                          android:layout_width="0dp"
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            >
+            <LinearLayout android:id="@+id/bottom_panel"
+                          android:layout_width="fill_parent"
                           android:layout_height="wrap_content"
-                          android:layout_weight="1"
-                          android:background="@drawable/sent_bubble">
+                          android:gravity="center_vertical"
+                          android:orientation="horizontal"
+                          android:clickable="true"
+                          android:background="?android:windowBackground"
+                          android:padding="5dp">
 
-                <org.smssecure.smssecure.components.emoji.EmojiToggle
-                        android:id="@+id/emoji_toggle"
-                        android:layout_width="37dp"
-                        android:layout_height="37dp"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/touch_highlight_background"
-                        android:contentDescription="@string/conversation_activity__emoji_toggle_description" />
+                <LinearLayout android:id="@+id/compose_bubble"
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:background="@drawable/sent_bubble">
 
-                <org.smssecure.smssecure.components.ComposeText
-                        style="@style/ComposeEditText"
-                        android:id="@+id/embedded_text_editor"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:minHeight="37dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:nextFocusForward="@+id/send_button"
-                        android:nextFocusRight="@+id/send_button"
-                        tools:hint="Send Silence message">
-                    <requestFocus />
-                </org.smssecure.smssecure.components.ComposeText>
-            </LinearLayout>
+                    <org.smssecure.smssecure.components.emoji.EmojiToggle
+                            android:id="@+id/emoji_toggle"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/touch_highlight_background"
+                            android:contentDescription="@string/conversation_activity__emoji_toggle_description" />
 
-            <org.smssecure.smssecure.components.AnimatingToggle
-                    android:id="@+id/button_toggle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/circle_tintable"
-                    android:layout_gravity="bottom">
+                    <org.smssecure.smssecure.components.ComposeText
+                            style="@style/ComposeEditText"
+                            android:id="@+id/embedded_text_editor"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:minHeight="37dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:nextFocusForward="@+id/send_button"
+                            android:nextFocusRight="@+id/send_button"
+                            tools:hint="Send Silence message">
+                        <requestFocus />
+                    </org.smssecure.smssecure.components.ComposeText>
+                </LinearLayout>
 
-                <ImageButton android:id="@+id/attach_button"
-                             android:layout_width="match_parent"
-                             android:layout_height="match_parent"
-                             android:layout_gravity="center"
-                             android:background="@drawable/circle_touch_highlight_background"
-                             android:src="@drawable/ic_attach_white_24dp"
-                             android:contentDescription="@string/ConversationActivity_add_attachment"
-                             android:nextFocusLeft="@+id/embedded_text_editor" />
+                <org.smssecure.smssecure.components.AnimatingToggle
+                        android:id="@+id/button_toggle"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/circle_tintable"
+                        android:layout_gravity="bottom">
 
-                <org.smssecure.smssecure.components.SendButton
-                        android:id="@+id/send_button"
+                    <ImageButton android:id="@+id/attach_button"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:layout_gravity="center"
+                                 android:background="@drawable/circle_touch_highlight_background"
+                                 android:src="@drawable/ic_attach_white_24dp"
+                                 android:contentDescription="@string/ConversationActivity_add_attachment"
+                                 android:nextFocusLeft="@+id/embedded_text_editor" />
+
+                    <org.smssecure.smssecure.components.SendButton
+                            android:id="@+id/send_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/conversation_activity__send"
+                            android:nextFocusLeft="@+id/embedded_text_editor"
+                            android:background="@drawable/circle_touch_highlight_background" />
+
+                    <ImageButton android:id="@+id/cancel_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="@string/conversation_activity__send"
-                        android:nextFocusLeft="@+id/embedded_text_editor"
-                        android:background="@drawable/circle_touch_highlight_background" />
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_touch_highlight_background"
+                        android:src="@drawable/ic_clear_white_24dp"
+                        android:contentDescription="@string/ConversationActivity_cancel"
+                        android:nextFocusLeft="@+id/embedded_text_editor" />
 
-            </org.smssecure.smssecure.components.AnimatingToggle>
+                </org.smssecure.smssecure.components.AnimatingToggle>
 
-        </LinearLayout>
-
+            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/cancel_message_progress_bar"
+                android:layout_alignTop="@+id/bottom_panel"
+                android:background="@color/transparent"
+                android:progressBackgroundTint="@color/transparent"
+                android:progressTint="@color/blue"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:progress="0"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
         <Button android:id="@+id/unblock_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

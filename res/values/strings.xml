@@ -93,6 +93,7 @@
     <string name="ConversationActivity_delete_thread_question">Delete conversation?</string>
     <string name="ConversationActivity_this_will_permanently_delete_all_messages_in_this_conversation">This will permanently delete all messages in this conversation.</string>
     <string name="ConversationActivity_add_attachment">Add attachment</string>
+    <string name="ConversationActivity_cancel">Cancel pending message</string>
     <string name="ConversationActivity_select_contact_info">Select contact info</string>
     <string name="ConversationActivity_compose_message">Compose message</string>
     <string name="ConversationActivity_sorry_there_was_an_error_adding_your_attachment">Sorry, there was an error adding your attachment.</string>
@@ -729,6 +730,8 @@
     <string name="preferences__submit_debug_log">Submit debug log</string>
     <string name="preferences__support_wifi_calling">\'Wi-Fi Calling\' compatibility mode</string>
     <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">Enable if your device uses SMS/MMS delivery over Wi-Fi (only enable when \'Wi-Fi Calling\' is enabled on your device).</string>
+    <string name="preferences__sending_delay">Sending delay</string>
+    <string name="preferences__give_some_time_to_cancel_a_message">Give some time to cancel a message</string>
     <string name="preferences__about">About Silence</string>
     <string name="preferences__about_version">Version %s</string>
     <string name="preferences__privacy_policy">Privacy policy</string>

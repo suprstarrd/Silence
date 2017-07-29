@@ -56,6 +56,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -168,6 +169,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private   AnimatingToggle       buttonToggle;
   private   SendButton            sendButton;
   private   ImageButton           attachButton;
+  private   ImageButton           cancelButton;
+  private   ProgressBar           cancelProgressBar;
   protected ConversationTitleView titleView;
   private   TextView              charactersLeft;
   private   ConversationFragment  fragment;
@@ -176,11 +179,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private   View                  composePanel;
   private   View                  composeBubble;
 
-  private   AttachmentTypeSelectorAdapter attachmentAdapter;
-  private   AttachmentManager             attachmentManager;
-  private   BroadcastReceiver             securityUpdateReceiver;
-  private   Stub<EmojiDrawer>             emojiDrawerStub;
-  private   EmojiToggle                   emojiToggle;
+  private   AttachmentTypeSelectorAdapter  attachmentAdapter;
+  private   AttachmentManager              attachmentManager;
+  private   BroadcastReceiver              securityUpdateReceiver;
+  private   Stub<EmojiDrawer>              emojiDrawerStub;
+  private   EmojiToggle                    emojiToggle;
+  private   AsyncTask<Void, Integer, Void> deferredMessageTask = null;
 
   private Recipients recipients;
   private long       threadId;
@@ -274,6 +278,14 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     fragment.setLastSeen(System.currentTimeMillis());
     markLastSeen();
     AudioSlidePlayer.stopAll();
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    if (cancelDeferredMessage()) {
+      sendMessage();
+    }
   }
 
   @Override public void onConfigurationChanged(Configuration newConfig) {
@@ -681,6 +693,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
   }
 
+  private boolean cancelDeferredMessage() {
+    return deferredMessageTask != null && deferredMessageTask.cancel(false);
+  }
+
   private void handleAddAttachment() {
     if (this.isMmsEnabled) {
       new AlertDialog.Builder(this).setAdapter(attachmentAdapter, new AttachmentTypeListener())
@@ -807,18 +823,20 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void initializeViews() {
-    titleView       = (ConversationTitleView) getSupportActionBar().getCustomView();
-    buttonToggle    = ViewUtil.findById(this, R.id.button_toggle);
-    sendButton      = ViewUtil.findById(this, R.id.send_button);
-    attachButton    = ViewUtil.findById(this, R.id.attach_button);
-    composeText     = ViewUtil.findById(this, R.id.embedded_text_editor);
-    charactersLeft  = ViewUtil.findById(this, R.id.space_left);
-    emojiToggle     = ViewUtil.findById(this, R.id.emoji_toggle);
-    emojiDrawerStub = ViewUtil.findStubById(this, R.id.emoji_drawer_stub);
-    unblockButton   = ViewUtil.findById(this, R.id.unblock_button);
-    composePanel    = ViewUtil.findById(this, R.id.bottom_panel);
-    composeBubble   = ViewUtil.findById(this, R.id.compose_bubble);
-    container       = ViewUtil.findById(this, R.id.layout_container);
+    titleView         = (ConversationTitleView) getSupportActionBar().getCustomView();
+    buttonToggle      = ViewUtil.findById(this, R.id.button_toggle);
+    sendButton        = ViewUtil.findById(this, R.id.send_button);
+    attachButton      = ViewUtil.findById(this, R.id.attach_button);
+    cancelButton      = ViewUtil.findById(this, R.id.cancel_button);
+    cancelProgressBar = ViewUtil.findById(this, R.id.cancel_message_progress_bar);
+    composeText       = ViewUtil.findById(this, R.id.embedded_text_editor);
+    charactersLeft    = ViewUtil.findById(this, R.id.space_left);
+    emojiToggle       = ViewUtil.findById(this, R.id.emoji_toggle);
+    emojiDrawerStub   = ViewUtil.findStubById(this, R.id.emoji_drawer_stub);
+    unblockButton     = ViewUtil.findById(this, R.id.unblock_button);
+    composePanel      = ViewUtil.findById(this, R.id.bottom_panel);
+    composeBubble     = ViewUtil.findById(this, R.id.compose_bubble);
+    container         = ViewUtil.findById(this, R.id.layout_container);
 
     if (SilencePreferences.isEmojiDrawerDisabled(this))
       emojiToggle.setVisibility(View.GONE);
@@ -853,6 +871,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     composeText.setOnEditorActionListener(sendButtonListener);
     attachButton.setOnClickListener(new AttachButtonListener());
     attachButton.setOnLongClickListener(new AttachButtonLongClickListener());
+    cancelButton.setOnClickListener(new CancelButtonListener());
     sendButton.setOnClickListener(sendButtonListener);
     sendButton.setEnabled(true);
     sendButton.addOnTransportChangedListener(new OnTransportChangedListener() {
@@ -1273,6 +1292,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private void updateToggleButtonState() {
     if (composeText.getText().length() == 0 && !attachmentManager.isAttachmentPresent()) {
       buttonToggle.display(attachButton);
+    } else if (deferredMessageTask != null) {
+      buttonToggle.display(cancelButton);
     } else {
       buttonToggle.display(sendButton);
     }
@@ -1326,7 +1347,67 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private class SendButtonListener implements OnClickListener, TextView.OnEditorActionListener {
     @Override
     public void onClick(View v) {
-      sendMessage();
+      final int delay = SilencePreferences.getSendingDelay(ConversationActivity.this) * 1000;
+
+      if (delay <= 0) {
+        sendMessage();
+        return;
+      }
+
+      deferredMessageTask = new AsyncTask<Void, Integer, Void>() {
+        @Override
+        protected void onPreExecute() {
+          cancelProgressBar.setProgress(0);
+          cancelProgressBar.setVisibility(View.VISIBLE);
+          composeText.setEnabled(false);
+          updateToggleButtonState();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+          publishProgress(0);
+          long begin = System.currentTimeMillis();
+          long end = begin + delay;
+          long now = begin;
+          while (now < end) {
+            publishProgress((int)(100 * (float)(now - begin) / (end - begin)));
+            try {
+              Thread.sleep(10);
+            } catch (InterruptedException e) {
+              break;
+            }
+            if (isCancelled()) break;
+            now = System.currentTimeMillis();
+          }
+          return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+          cancelProgressBar.setProgress(progress[0]);
+        }
+
+        private void cleanup() {
+          deferredMessageTask = null;
+          cancelProgressBar.setVisibility(View.INVISIBLE);
+          cancelProgressBar.setProgress(0);
+          composeText.setEnabled(true);
+        }
+
+        @Override
+        protected void onCancelled(Void result) {
+          cleanup();
+          updateToggleButtonState();
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+          cleanup();
+          sendMessage();
+          updateToggleButtonState();
+        }
+      };
+      deferredMessageTask.execute();
     }
 
     @Override
@@ -1336,6 +1417,13 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         return true;
       }
       return false;
+    }
+  }
+
+  private class CancelButtonListener implements OnClickListener {
+    @Override
+    public void onClick(View v) {
+      cancelDeferredMessage();
     }
   }
 
