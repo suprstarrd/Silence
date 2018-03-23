@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Import a patch from TextSecure and adapt it for Silence
+# Import a patch from Signal and adapt it for Silence
 # ../Signal-Android must be an cloned git tree
 # usage: ./scripts/import-patch.sh <commit SHAs>
 
