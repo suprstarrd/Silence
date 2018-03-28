@@ -2,6 +2,7 @@ package org.smssecure.smssecure.database;
 
 import android.text.TextUtils;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -9,10 +10,9 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.OutputStreamWriter;
 
 public class XmlBackup {
 
@@ -152,12 +152,10 @@ public class XmlBackup {
     private static final String  OPEN_ATTRIBUTE  = "=\"";
     private static final String  CLOSE_ATTRIBUTE = "\" ";
 
-    private static final Pattern PATTERN         = Pattern.compile("[^\u0020-\uD7FF]");
-
     private final BufferedWriter bufferedWriter;
 
     public Writer(String path, int count) throws IOException {
-      bufferedWriter = new BufferedWriter(new FileWriter(path, false));
+      bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
 
       bufferedWriter.write(XML_HEADER);
       bufferedWriter.newLine();
@@ -200,23 +198,7 @@ public class XmlBackup {
 
     private String escapeXML(String s) {
       if (TextUtils.isEmpty(s)) return s;
-
-      Matcher matcher = PATTERN.matcher( s.replace("&",  "&amp;")
-                                          .replace("<",  "&lt;")
-                                          .replace(">",  "&gt;")
-                                          .replace("\"", "&quot;")
-                                          .replace("'",  "&apos;"));
-      StringBuffer st = new StringBuffer();
-
-      while (matcher.find()) {
-        StringBuilder escaped = new StringBuilder();
-        for (char ch: matcher.group(0).toCharArray()) {
-          escaped.append("&#").append((int) ch).append(";");
-        }
-        matcher.appendReplacement(st, escaped.toString());
-      }
-      matcher.appendTail(st);
-      return st.toString();
+      return StringEscapeUtils.escapeXml11(s);
     }
 
   }
