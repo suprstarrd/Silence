@@ -107,7 +107,7 @@ Atentu, tio ĉi malaktivigos ĉifradon de konservejo por ĉiuj mesaĝoj kaj ŝlo
     <string name="ConversationActivity_install_smssecure">Ni interparolu sekure per Silence: %s</string>
     <string name="ConversationActivity_recipient_self">Vi ne povas komenci sekuran seancon kun vi mem!</string>
     <string name="ConversationActivity_mms_not_supported_title">MMS-oj ne estas subtenataj</string>
-    <string name="ConversationActivity_mms_not_supported_message">Ne povas sendi tiun ĉi mesaĝon ĉar via telefon-provizanto ne subtenas MMS-ojn.</string>
+    <string name="ConversationActivity_mms_not_supported_message">Ne povas sendi tiun ĉi mesaĝon ĉar via telefonret‑provizanto ne subtenas MMS-ojn.</string>
     <string name="ConversationActivity_specify_recipient">Bonvolu elekti kontakton</string>
     <string name="ConversationActivity_attachment_exceeds_size_limits">Kunsendaĵo trograndas limiton.</string>
     <string name="ConversationActivity_silence_needs_sms_permission_in_order_to_send_an_sms">Silence bezonas la permeson al SMS por sendi SMS‑ajn mesaĝojn, sed ĝi estas rifuzita. Bonvolu malfermi Androidan menuon de aplikaĵaj agordoj → permesoj, kaj aktivigu “SMS”.</string>
@@ -312,7 +312,7 @@ Ricevis ŝlosil-interŝanĝan mesaĝon por erara versio de protokolo.</string>
     <string name="SmsMessageRecord_received_message_with_unknown_identity_key_tap_to_process">Ricevis mesaĝon kun nekonata ident-ŝlosilo. Frapetu por prilabori kaj montri.</string>
     <string name="SmsMessageRecord_received_updated_but_unknown_identity_information">Ricevis ĝisdatan sed nekonatan ident-informojn. Frapetu por kontroli identigilon.</string>
     <string name="SmsMessageRecord_secure_session_ended">Sekura seanco finita.</string>
-    <string name="SmsMessageRecord_duplicate_message">Duplikata mesaĝo.</string>
+    <string name="SmsMessageRecord_duplicate_message">Duplikato de mesaĝo.</string>
     <!--ThreadRecord-->
     <string name="ThreadRecord_left_the_group">Forlasis grupon</string>
     <string name="ThreadRecord_draft">Malneto:</string>
@@ -502,9 +502,7 @@ Ricevis ŝlosil-interŝanĝan mesaĝon por erara versio de protokolo.</string>
     <!--receive_key_dialog-->
     <string name="receive_key_activity__complete">Pluigi</string>
     <!--recipients_panel-->
-    <string name="recipients_panel__to">
-        <small>Enigu nomon aŭ numeron</small>
-    </string>
+    <string name="recipients_panel__to"><small>Enigu nomon aŭ numeron</small></string>
     <string name="recipients_panel__add_member">Aldoni anon</string>
     <!--verify_identity_activity-->
     <string name="verify_identity_activity__their_identity_they_read">Lia identeco (li legas):</string>
@@ -512,7 +510,7 @@ Ricevis ŝlosil-interŝanĝan mesaĝon por erara versio de protokolo.</string>
     <!--message_details_header-->
     <string name="message_details_header__issues_need_your_attention">Kelkaj aferoj bezonas vian atenton.</string>
     <string name="message_details_header__sent">Sendita</string>
-    <string name="message_details_header__received">Recevita</string>
+    <string name="message_details_header__received">Ricevita</string>
     <string name="message_details_header__type">Speco</string>
     <string name="message_details_header__to">Al</string>
     <string name="message_details_header__from">De</string>
@@ -739,12 +737,12 @@ Ricevis ŝlosil-interŝanĝan mesaĝon por erara versio de protokolo.</string>
     <string name="convesation_group_options__recipients_list">Listo de ricevantoj</string>
     <string name="conversation_group_options__delivery">Liverado</string>
     <string name="conversation_group_options__conversation">Interparolado</string>
-    <string name="conversation_group_options__broadcast">Elsendo</string>
+    <string name="conversation_group_options__broadcast">Dissendo</string>
     <!--key_scanning-->
     <string name="key_scanning__menu_compare">Kompari</string>
     <string name="key_scanning__menu_display_your_qr_code">Montri vian QR-kodon</string>
     <string name="key_scanning__menu_scan_contacts_qr_code">Skani QR-kodon de kontakto</string>
-    <string name="share_identity_fingerprint">Kunhavigi fingrospuro de via identigo</string>
+    <string name="share_identity_fingerprint">Kunhavigi fingrospuron de via identigo</string>
     <!--text_secure_normal-->
     <string name="text_secure_normal__menu_new_message">Nova mesaĝo</string>
     <string name="text_secure_normal__menu_new_group">Nova grupo</string>
@@ -812,4 +810,5 @@ Ricevis ŝlosil-interŝanĝan mesaĝon por erara versio de protokolo.</string>
     <string name="AndroidManifest__all_media_named">Ĉiuj aŭdvidaĵoj kun %1$s</string>
     <string name="AndroidManifest__all_media">Ĉiuj aŭdvidaĵoj</string>
     <string name="media_overview_activity__no_media">Neniu aŭdvidaĵo</string>
+    <string name="VideoPlayer_error_playing_video">Eraro dum ludado de video</string>
 </resources>

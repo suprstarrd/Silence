@@ -343,7 +343,7 @@ Otrzymano wiadomość wymiany klucz dla niepoprawnej wersji protokołu.</string>
     <string name="SmsMessageRecord_received_message_with_unknown_identity_key_tap_to_process">Otrzymano wiadomość z nieznanym kluczem tożsamości. Stuknij aby przetworzyć i wyświetlić.</string>
     <string name="SmsMessageRecord_received_updated_but_unknown_identity_information">Otrzymał zaktualizowany, ale z nieznaną informacją tożsamości. Dotknij aby potwierdzić tożsamość.</string>
     <string name="SmsMessageRecord_secure_session_ended">Bezpieczna sesja zakończona.</string>
-    <string name="SmsMessageRecord_duplicate_message">Duplikuj wiadomość.</string>
+    <string name="SmsMessageRecord_duplicate_message">Duplikat wiadomości.</string>
     <!--ThreadRecord-->
     <string name="ThreadRecord_left_the_group">Opuścił grupę</string>
     <string name="ThreadRecord_draft">Szkic:</string>
@@ -533,9 +533,7 @@ Otrzymano wiadomość wymiany klucz dla niepoprawnej wersji protokołu.</string>
     <!--receive_key_dialog-->
     <string name="receive_key_activity__complete">Kontynuuj</string>
     <!--recipients_panel-->
-    <string name="recipients_panel__to">
-        <small>Wprowadź nazwę lub numer kontaktu</small>
-    </string>
+    <string name="recipients_panel__to"><small>Wprowadź nazwę lub numer kontaktu</small></string>
     <string name="recipients_panel__add_member">Dodaj uczestnika</string>
     <!--verify_identity_activity-->
     <string name="verify_identity_activity__their_identity_they_read">Ich identyfikacja (oni widzą):</string>
@@ -845,4 +843,5 @@ Otrzymano wiadomość wymiany klucz dla niepoprawnej wersji protokołu.</string>
     <string name="AndroidManifest__all_media_named">Wszystkie multimedia z %1$s</string>
     <string name="AndroidManifest__all_media">Wszystkie multimedia</string>
     <string name="media_overview_activity__no_media">Brak multimediów</string>
+    <string name="VideoPlayer_error_playing_video">Błąd podczas odtwarzania filmiku</string>
 </resources>
